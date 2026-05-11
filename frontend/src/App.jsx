@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useQuote } from './useQuote.js'
+import TerminalCard from './TerminalCard.jsx'
 import AddQuoteForm from './AddQuoteForm.jsx'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL
@@ -12,16 +13,18 @@ export default function App() {
   }, [fetchQuote])
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center gap-4 p-8">
-      {loading && <p>Loading…</p>}
-      {error && <p role="alert">{error}</p>}
-      {quote && (
-        <div>
-          <p>{quote.quote}</p>
-          <p>{quote.author}</p>
-        </div>
-      )}
-      <button onClick={fetchQuote}>New Quote</button>
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-4 p-8">
+      <TerminalCard quote={quote} loading={loading} error={error} />
+      <div className="flex gap-6 font-mono text-green-500">
+        <button
+          onClick={fetchQuote}
+          disabled={loading}
+          className="disabled:opacity-40 disabled:pointer-events-none hover:underline"
+          aria-label="next quote"
+        >
+          &gt; next
+        </button>
+      </div>
       <AddQuoteForm backendUrl={backendUrl} />
     </div>
   )

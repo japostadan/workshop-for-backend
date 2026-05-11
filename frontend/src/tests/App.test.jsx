@@ -25,7 +25,7 @@ describe('quote display', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Either write something worth reading or do something worth writing.')).toBeInTheDocument()
-      expect(screen.getByText('Benjamin Franklin')).toBeInTheDocument()
+      expect(screen.getByText('— Benjamin Franklin')).toBeInTheDocument()
     })
   })
 
@@ -39,7 +39,7 @@ describe('quote display', () => {
     })
   })
 
-  it('shows a new quote when the New Quote button is clicked', async () => {
+  it('shows a new quote when the next button is clicked', async () => {
     stubQuote({ quote: 'I should have been more kind.', author: 'Clive James' })
     stubQuote({ quote: 'The only way out is through.', author: 'Robert Frost' })
 
@@ -49,11 +49,11 @@ describe('quote display', () => {
       expect(screen.getByText('I should have been more kind.')).toBeInTheDocument()
     })
 
-    await userEvent.click(screen.getByRole('button', { name: 'New Quote' }))
+    await userEvent.click(screen.getByRole('button', { name: 'next quote' }))
 
     await waitFor(() => {
       expect(screen.getByText('The only way out is through.')).toBeInTheDocument()
-      expect(screen.getByText('Robert Frost')).toBeInTheDocument()
+      expect(screen.getByText('— Robert Frost')).toBeInTheDocument()
     })
   })
 
@@ -62,6 +62,6 @@ describe('quote display', () => {
 
     render(<App />)
 
-    expect(screen.getByText('Loading…')).toBeInTheDocument()
+    expect(screen.getByLabelText('loading')).toBeInTheDocument()
   })
 })
