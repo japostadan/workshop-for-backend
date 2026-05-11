@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
-import AddQuoteForm from './AddQuoteForm.jsx'
+import AddQuoteForm from '../AddQuoteForm.jsx'
 
 const BACKEND_URL = 'http://localhost:3001'
 

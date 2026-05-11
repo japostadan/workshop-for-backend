@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import request from "supertest";
-import { app } from "./server.js";
+import { app } from "../server.js";
 
 describe("GET /quotes", () => {
   it("returns a JSON object with quote and author", async () => {
