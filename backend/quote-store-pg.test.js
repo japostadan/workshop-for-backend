@@ -4,14 +4,14 @@ import { createPgQuoteStore } from "./quote-store-pg.js";
 
 const { Pool } = pg;
 
-const skip = !process.env.DATABASE_URL;
+const skip = !process.env.TEST_DATABASE_URL;
 
 describe.skipIf(skip)("createPgQuoteStore", () => {
   let pool;
   let store;
 
   beforeEach(async () => {
-    pool = new Pool({ connectionString: process.env.DATABASE_URL });
+    pool = new Pool({ connectionString: process.env.TEST_DATABASE_URL });
     await pool.query("TRUNCATE quotes RESTART IDENTITY");
     store = createPgQuoteStore(pool);
   });
