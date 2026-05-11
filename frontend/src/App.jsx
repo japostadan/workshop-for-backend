@@ -1,16 +1,21 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useQuote } from './useQuote.js'
 import TerminalCard from './TerminalCard.jsx'
-import AddQuoteForm from './AddQuoteForm.jsx'
+import AddQuoteModal from './AddQuoteModal.jsx'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
 export default function App() {
-  const { quote, loading, error, fetchQuote } = useQuote(backendUrl)
+  const { quote, loading, error, fetchQuote, setQuote } = useQuote(backendUrl)
+  const [modalOpen, setModalOpen] = useState(false)
 
   useEffect(() => {
     fetchQuote()
   }, [fetchQuote])
+
+  function handleSuccess(newQuote) {
+    setQuote(newQuote)
+  }
 
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-4 p-8">
@@ -24,8 +29,20 @@ export default function App() {
         >
           &gt; next
         </button>
+        <button
+          onClick={() => setModalOpen(true)}
+          className="hover:underline"
+          aria-label="add quote"
+        >
+          &gt; add
+        </button>
       </div>
-      <AddQuoteForm backendUrl={backendUrl} />
+      <AddQuoteModal
+        backendUrl={backendUrl}
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSuccess={handleSuccess}
+      />
     </div>
   )
 }

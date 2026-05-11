@@ -17,6 +17,33 @@ function stubQuote(quote) {
   })
 }
 
+describe('add quote modal', () => {
+  it('opens the modal when > add is clicked', async () => {
+    fetch.mockImplementationOnce(() => new Promise(() => {}))
+    render(<App />)
+    await userEvent.click(screen.getByRole('button', { name: 'add quote' }))
+    expect(screen.getByText('add-quote.sh')).toBeInTheDocument()
+  })
+
+  it('shows the submitted quote in the card after modal success', async () => {
+    fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ quote: 'First', author: 'A' }) })
+    fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ quote: 'Submitted', author: 'B' }) })
+
+    render(<App />)
+    await waitFor(() => expect(screen.getByText('First')).toBeInTheDocument())
+
+    await userEvent.click(screen.getByRole('button', { name: 'add quote' }))
+    await userEvent.type(screen.getAllByRole('textbox')[0], 'Submitted')
+    await userEvent.type(screen.getAllByRole('textbox')[1], 'B')
+    await userEvent.click(screen.getByRole('button', { name: /submit/i }))
+
+    await waitFor(() => {
+      expect(screen.getByText('Submitted')).toBeInTheDocument()
+      expect(screen.queryByText('add-quote.sh')).not.toBeInTheDocument()
+    })
+  })
+})
+
 describe('quote display', () => {
   it('shows the quote text and author fetched on mount', async () => {
     stubQuote({ quote: 'Either write something worth reading or do something worth writing.', author: 'Benjamin Franklin' })
