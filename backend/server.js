@@ -1,7 +1,7 @@
 import express from "express";
 import { fileURLToPath } from "url";
 import cors from "cors";
-import { validateQuote } from "./quote.js";
+import { validateQuote, QuoteNotFoundError } from "./quote.js";
 
 export function createApp(store) {
   const app = express();
@@ -10,7 +10,15 @@ export function createApp(store) {
   app.use(express.json());
 
   app.get("/quotes", async (req, res) => {
-    res.json(await store.getRandomQuote());
+    try {
+      res.json(await store.getRandomQuote());
+    } catch (err) {
+      if (err instanceof QuoteNotFoundError) {
+        res.status(404).json({ error: err.message });
+      } else {
+        throw err;
+      }
+    }
   });
 
   app.post("/quotes", async (req, res) => {

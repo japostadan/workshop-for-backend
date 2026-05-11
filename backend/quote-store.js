@@ -1,8 +1,11 @@
+import { QuoteNotFoundError } from "./quote.js";
+
 export function createQuoteStore(initialQuotes = []) {
   const quotes = [...initialQuotes];
 
   return {
     getRandomQuote() {
+      if (quotes.length === 0) throw new QuoteNotFoundError();
       const index = Math.floor(Math.random() * quotes.length);
       return quotes[index];
     },
