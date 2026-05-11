@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { addQuote } from './api.js'
 
 export default function AddQuoteForm({ backendUrl }) {
   const [quote, setQuote] = useState('')
@@ -11,19 +12,14 @@ export default function AddQuoteForm({ backendUrl }) {
     setSubmitting(true)
     setStatus(null)
 
-    const res = await fetch(`${backendUrl}/quotes`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ quote: quote.trim(), author: author.trim() }),
-    })
+    const data = await addQuote(backendUrl, { quote: quote.trim(), author: author.trim() })
 
-    if (res.ok) {
+    if (data.error) {
+      setStatus({ type: 'error', message: data.error })
+    } else {
       setQuote('')
       setAuthor('')
       setStatus({ type: 'success', message: 'Quote added!' })
-    } else {
-      const data = await res.json()
-      setStatus({ type: 'error', message: data.error })
     }
 
     setSubmitting(false)
