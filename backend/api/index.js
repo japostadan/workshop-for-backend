@@ -1,3 +1,4 @@
-import { app } from '../server.js'
+import { createApp } from '../server.js'
+import { createStoreFromEnv } from '../quote-store-factory.js'
 
-export default app
+export default createApp(createStoreFromEnv())

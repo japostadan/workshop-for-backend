@@ -1,6 +1,9 @@
 import { describe, it, expect } from "vitest";
 import request from "supertest";
-import { app } from "../server.js";
+import { createApp } from "../server.js";
+import { createQuoteStore } from "../quote-store.js";
+
+const app = createApp(createQuoteStore([{ quote: "Test", author: "Tester" }]));
 
 describe("GET /quotes", () => {
   it("returns a JSON object with quote and author", async () => {
