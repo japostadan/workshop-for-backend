@@ -4,6 +4,7 @@ import { createApp } from "../server.js";
 import { createQuoteStore } from "../quote-store.js";
 
 const app = createApp(createQuoteStore([{ quote: "Test", author: "Tester" }]));
+const emptyApp = createApp(createQuoteStore([]));
 
 describe("GET /quotes", () => {
   it("returns a JSON object with quote and author", async () => {
@@ -13,6 +14,11 @@ describe("GET /quotes", () => {
       quote: expect.any(String),
       author: expect.any(String),
     });
+  });
+
+  it("returns 404 when the store has no quotes", async () => {
+    const res = await request(emptyApp).get("/quotes");
+    expect(res.status).toBe(404);
   });
 });
 

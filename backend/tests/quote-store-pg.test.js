@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterAll } from "vitest";
 import pg from "pg";
 import { createPgQuoteStore } from "../quote-store-pg.js";
+import { QuoteNotFoundError } from "../quote.js";
 
 const { Pool } = pg;
 
@@ -33,5 +34,9 @@ describe.skipIf(skip)("createPgQuoteStore", () => {
     await store.addQuote({ quote: "Test quote", author: "Test author" });
     const result = await store.getRandomQuote();
     expect(result).toEqual({ quote: "Test quote", author: "Test author" });
+  });
+
+  it("getRandomQuote throws QuoteNotFoundError when table is empty", async () => {
+    await expect(store.getRandomQuote()).rejects.toThrow(QuoteNotFoundError);
   });
 });
