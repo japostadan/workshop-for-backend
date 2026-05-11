@@ -3,11 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title></title>
+    <title>Quotes of the Day</title>
     <link href="style.css" rel="stylesheet" />
     <script src="config.js"></script>
   </head>
   <body>
     <h1 class="head">Quotes of the Day</h1>
+
+    <div id="quote-display">
+      <p id="quote-text"></p>
+      <p id="quote-author"></p>
+    </div>
+
+    <script>
+      async function fetchAndShow() {
+        const res = await fetch(window.CONFIG.BACKEND_URL + "/quotes");
+        const data = await res.json();
+        document.getElementById("quote-text").textContent = data.quote;
+        document.getElementById("quote-author").textContent = "— " + data.author;
+      }
+
+      document.addEventListener("DOMContentLoaded", fetchAndShow);
+    </script>
   </body>
 </html>
