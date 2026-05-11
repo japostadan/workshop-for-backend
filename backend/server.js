@@ -4,6 +4,7 @@ import cors from "cors";
 import pg from "pg";
 import { createQuoteStore } from "./quote-store.js";
 import { createPgQuoteStore } from "./quote-store-pg.js";
+import { validateQuote } from "./quote.js";
 
 const app = express();
 const port = 3001;
@@ -24,16 +25,6 @@ const store = process.env.DATABASE_URL
         author: "Clive James",
       },
     ]);
-
-function validateQuote(body) {
-  if (typeof body !== "object" || body === null || !body.quote) {
-    return "quote is required";
-  }
-  if (!body.author) {
-    return "author is required";
-  }
-  return null;
-}
 
 app.get("/quotes", async (req, res) => {
   res.json(await store.getRandomQuote());
