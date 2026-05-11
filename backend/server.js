@@ -1,10 +1,11 @@
 import express from "express";
 import { fileURLToPath } from "url";
-//import cors from "cors";
+import cors from "cors";
 
 const app = express();
 const port = 3001;
 
+app.use(cors());
 app.use(express.json());
 
 const quotes = [
@@ -25,34 +26,37 @@ function randomQuote() {
 }
 
 function validateQuote(body) {
-  if (typeof body !== "object" || body === null || !("quote" in body) || !("author" in body)) {
-    return "Expected body to be a JSON object containing keys quote and author.";
+  if (
+    typeof body !== "object" ||
+    body === null ||
+    !body.quote ||
+    !body.author
+  ) {
+    return "Missing required fields";
   }
   return null;
 }
 
-app.get("/", (req, res) => {
-  const quote = randomQuote();
-  res.send(`"${quote.quote}" -${quote.author}`);
+app.get("/quotes", (req, res) => {
+  res.json(randomQuote());
 });
 
-app.post("/", (req, res) => {
+app.post("/quotes", (req, res) => {
   const error = validateQuote(req.body);
   if (error) {
-    console.error(`Failed to extract quote and author from post body: ${JSON.stringify(req.body)}`);
-    res.status(400).send(error);
+    res.status(400).json({ error });
     return;
   }
   quotes.push({
     quote: req.body.quote,
     author: req.body.author,
   });
-  res.send("ok");
+  res.status(201).json({ success: true });
 });
 
 app.use((err, req, res, next) => {
   if (err.type === "entity.parse.failed") {
-    res.status(400).send("Expected body to be JSON.");
+    res.status(400).json({ error: "Expected body to be JSON." });
     return;
   }
   next(err);
