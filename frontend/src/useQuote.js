@@ -19,5 +19,5 @@ export function useQuote(backendUrl) {
     }
   }, [backendUrl])
 
-  return { quote, loading, error, fetchQuote }
+  return { quote, setQuote, loading, error, fetchQuote }
 }
