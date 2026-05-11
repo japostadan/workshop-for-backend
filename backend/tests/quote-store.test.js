@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { createQuoteStore } from "./quote-store.js";
+import { createQuoteStore } from "../quote-store.js";
 
 describe("createQuoteStore", () => {
   it("getRandomQuote returns a quote from the initial set", () => {

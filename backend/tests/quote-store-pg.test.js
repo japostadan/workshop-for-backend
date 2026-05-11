@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterAll } from "vitest";
 import pg from "pg";
-import { createPgQuoteStore } from "./quote-store-pg.js";
+import { createPgQuoteStore } from "../quote-store-pg.js";
 
 const { Pool } = pg;
 

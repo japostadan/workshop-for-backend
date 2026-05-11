@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
-import App from './App.jsx'
+import App from '../App.jsx'
 
 const BACKEND_URL = 'http://localhost:3001'
 
