@@ -1,7 +1,9 @@
 import express from "express";
 import { fileURLToPath } from "url";
 import cors from "cors";
+import pg from "pg";
 import { createQuoteStore } from "./quote-store.js";
+import { createPgQuoteStore } from "./quote-store-pg.js";
 
 const app = express();
 const port = 3001;
@@ -9,17 +11,19 @@ const port = 3001;
 app.use(cors());
 app.use(express.json());
 
-const store = createQuoteStore([
-  {
-    quote:
-      "Either write something worth reading or do something worth writing.",
-    author: "Benjamin Franklin",
-  },
-  {
-    quote: "I should have been more kind.",
-    author: "Clive James",
-  },
-]);
+const store = process.env.DATABASE_URL
+  ? createPgQuoteStore(new pg.Pool({ connectionString: process.env.DATABASE_URL }))
+  : createQuoteStore([
+      {
+        quote:
+          "Either write something worth reading or do something worth writing.",
+        author: "Benjamin Franklin",
+      },
+      {
+        quote: "I should have been more kind.",
+        author: "Clive James",
+      },
+    ]);
 
 function validateQuote(body) {
   if (typeof body !== "object" || body === null || !body.quote) {
@@ -31,17 +35,17 @@ function validateQuote(body) {
   return null;
 }
 
-app.get("/quotes", (req, res) => {
-  res.json(store.getRandomQuote());
+app.get("/quotes", async (req, res) => {
+  res.json(await store.getRandomQuote());
 });
 
-app.post("/quotes", (req, res) => {
+app.post("/quotes", async (req, res) => {
   const error = validateQuote(req.body);
   if (error) {
     res.status(400).json({ error });
     return;
   }
-  store.addQuote({ quote: req.body.quote, author: req.body.author });
+  await store.addQuote({ quote: req.body.quote, author: req.body.author });
   res.status(201).json({ success: true });
 });
 
