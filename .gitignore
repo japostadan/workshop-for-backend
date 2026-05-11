@@ -10,9 +10,13 @@ coverage/
 # Claude-specific files — local only
 .claude/
 CLAUDE.md
+.scratch/
+docs/
 
 # Workshop notes — local only
 TASK_BREAKDOWN.md
 WORKSHOP_NOTES.md
 IMPLEMENTATION_PLAN.md
 errors.md
+AGENTS.md
+CONTEXT.md
