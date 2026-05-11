@@ -22,13 +22,11 @@ const store = createQuoteStore([
 ]);
 
 function validateQuote(body) {
-  if (
-    typeof body !== "object" ||
-    body === null ||
-    !body.quote ||
-    !body.author
-  ) {
-    return "Missing required fields";
+  if (typeof body !== "object" || body === null || !body.quote) {
+    return "quote is required";
+  }
+  if (!body.author) {
+    return "author is required";
   }
   return null;
 }

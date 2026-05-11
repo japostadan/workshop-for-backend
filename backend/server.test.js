@@ -29,7 +29,7 @@ describe("POST /quotes", () => {
       .set("Content-Type", "application/json")
       .send(JSON.stringify({ author: "Test author" }));
     expect(res.status).toBe(400);
-    expect(res.body).toEqual({ error: "Missing required fields" });
+    expect(res.body).toEqual({ error: "quote is required" });
   });
 
   it("returns 400 with error message when author is missing", async () => {
@@ -38,7 +38,7 @@ describe("POST /quotes", () => {
       .set("Content-Type", "application/json")
       .send(JSON.stringify({ quote: "Test quote" }));
     expect(res.status).toBe(400);
-    expect(res.body).toEqual({ error: "Missing required fields" });
+    expect(res.body).toEqual({ error: "author is required" });
   });
 
   it("returns 400 when quote is an empty string", async () => {
@@ -47,7 +47,7 @@ describe("POST /quotes", () => {
       .set("Content-Type", "application/json")
       .send(JSON.stringify({ quote: "", author: "Test author" }));
     expect(res.status).toBe(400);
-    expect(res.body).toEqual({ error: "Missing required fields" });
+    expect(res.body).toEqual({ error: "quote is required" });
   });
 
   it("returns 400 when author is an empty string", async () => {
@@ -56,7 +56,7 @@ describe("POST /quotes", () => {
       .set("Content-Type", "application/json")
       .send(JSON.stringify({ quote: "Test quote", author: "" }));
     expect(res.status).toBe(400);
-    expect(res.body).toEqual({ error: "Missing required fields" });
+    expect(res.body).toEqual({ error: "author is required" });
   });
 
   it("returns 400 with error message for malformed JSON", async () => {
