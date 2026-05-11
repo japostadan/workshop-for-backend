@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useQuote } from './useQuote.js'
+import AddQuoteForm from './AddQuoteForm.jsx'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL
 
@@ -21,6 +22,7 @@ export default function App() {
         </div>
       )}
       <button onClick={fetchQuote}>New Quote</button>
+      <AddQuoteForm backendUrl={backendUrl} />
     </div>
   )
 }
