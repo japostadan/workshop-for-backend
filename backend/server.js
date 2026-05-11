@@ -1,6 +1,7 @@
 import express from "express";
 import { fileURLToPath } from "url";
 import cors from "cors";
+import { createQuoteStore } from "./quote-store.js";
 
 const app = express();
 const port = 3001;
@@ -8,7 +9,7 @@ const port = 3001;
 app.use(cors());
 app.use(express.json());
 
-const quotes = [
+const store = createQuoteStore([
   {
     quote:
       "Either write something worth reading or do something worth writing.",
@@ -18,12 +19,7 @@ const quotes = [
     quote: "I should have been more kind.",
     author: "Clive James",
   },
-];
-
-function randomQuote() {
-  const index = Math.floor(Math.random() * quotes.length);
-  return quotes[index];
-}
+]);
 
 function validateQuote(body) {
   if (
@@ -38,7 +34,7 @@ function validateQuote(body) {
 }
 
 app.get("/quotes", (req, res) => {
-  res.json(randomQuote());
+  res.json(store.getRandomQuote());
 });
 
 app.post("/quotes", (req, res) => {
@@ -47,10 +43,7 @@ app.post("/quotes", (req, res) => {
     res.status(400).json({ error });
     return;
   }
-  quotes.push({
-    quote: req.body.quote,
-    author: req.body.author,
-  });
+  store.addQuote({ quote: req.body.quote, author: req.body.author });
   res.status(201).json({ success: true });
 });
 
