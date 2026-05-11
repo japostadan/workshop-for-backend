@@ -1,3 +1,81 @@
-.head{
-  color: red;
+body {
+  font-family: sans-serif;
+  max-width: 640px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  color: #222;
+}
+
+.head {
+  margin-bottom: 1.5rem;
+}
+
+#quote-text {
+  font-size: 1.4rem;
+  font-style: italic;
+  margin-bottom: 0.25rem;
+}
+
+#quote-author {
+  font-size: 0.95rem;
+  color: #777;
+  margin-top: 0;
+}
+
+#new-quote-btn {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+#new-quote-btn:hover {
+  background: #555;
+}
+
+#add-quote-form {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 480px;
+}
+
+#add-quote-form textarea,
+#add-quote-form input[type="text"] {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#add-quote-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+#add-quote-form button[type="submit"] {
+  align-self: flex-start;
+  background: #0066cc;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+#add-quote-form button[type="submit"]:hover {
+  background: #0052a3;
+}
+
+#add-result {
+  font-size: 0.9rem;
+  color: #444;
+  margin: 0;
 }
