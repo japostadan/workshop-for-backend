@@ -2,28 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quotes of the Day</title>
-    <link href="style.css" rel="stylesheet" />
-    <script src="config.js"></script>
   </head>
   <body>
-    <h1 class="head">Quotes of the Day</h1>
-
-    <div id="quote-display">
-      <p id="quote-text"></p>
-      <p id="quote-author"></p>
-    </div>
-
-    <button id="new-quote-btn">New Quote</button>
-
-    <form id="add-quote-form">
-      <textarea name="quote" placeholder="Quote text" required></textarea>
-      <input type="text" name="author" placeholder="Author name" required>
-      <button type="submit">Add Quote</button>
-      <p id="add-result"></p>
-    </form>
-
-    <script src="app.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
