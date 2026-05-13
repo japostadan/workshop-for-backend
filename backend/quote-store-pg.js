@@ -2,6 +2,16 @@ import { QuoteNotFoundError } from "./quote.js";
 
 export function createPgQuoteStore(pool) {
   return {
+    async initialize() {
+      await pool.query(
+        `CREATE TABLE IF NOT EXISTS quotes (
+          id         SERIAL PRIMARY KEY,
+          quote      TEXT NOT NULL,
+          author     VARCHAR(255) NOT NULL,
+          created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+        )`
+      );
+    },
     async getRandomQuote() {
       const result = await pool.query(
         "SELECT quote, author FROM quotes ORDER BY RANDOM() LIMIT 1"

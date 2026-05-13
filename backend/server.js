@@ -54,6 +54,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
       author: "Clive James",
     },
   ]);
+  await store.initialize();
   const app = createApp(store);
   app.listen(3001, () => {
     console.error("Quote server listening on port 3001");
