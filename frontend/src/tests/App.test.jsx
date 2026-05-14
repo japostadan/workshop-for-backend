@@ -25,12 +25,13 @@ describe('add quote modal', () => {
     expect(screen.getByText('add-quote.sh')).toBeInTheDocument()
   })
 
-  it('shows the submitted quote in the card after modal success', async () => {
+  it('shows flash message and fetches new quote after modal success', async () => {
     fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ quote: 'First', author: 'A' }) })
-    fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ quote: 'Submitted', author: 'B' }) })
+    fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ id: 1, quote: 'Submitted', author: 'B' }) })
+    fetch.mockResolvedValueOnce({ ok: true, json: async () => ({ quote: 'New Random', author: 'C' }) })
 
     render(<App />)
-    await waitFor(() => expect(screen.getByText('First')).toBeInTheDocument())
+    await waitFor(() => expect(screen.getByText('"First"')).toBeInTheDocument())
 
     await userEvent.click(screen.getByRole('button', { name: 'add quote' }))
     await userEvent.type(screen.getAllByRole('textbox')[0], 'Submitted')
@@ -38,8 +39,12 @@ describe('add quote modal', () => {
     await userEvent.click(screen.getByRole('button', { name: /submit/i }))
 
     await waitFor(() => {
-      expect(screen.getByText('Submitted')).toBeInTheDocument()
+      expect(screen.getByText('> [OK] quote added.')).toBeInTheDocument()
       expect(screen.queryByText('add-quote.sh')).not.toBeInTheDocument()
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText('"New Random"')).toBeInTheDocument()
     })
   })
 })
@@ -51,7 +56,7 @@ describe('quote display', () => {
     render(<App />)
 
     await waitFor(() => {
-      expect(screen.getByText('Either write something worth reading or do something worth writing.')).toBeInTheDocument()
+      expect(screen.getByText('"Either write something worth reading or do something worth writing."')).toBeInTheDocument()
       expect(screen.getByText('— Benjamin Franklin')).toBeInTheDocument()
     })
   })
@@ -73,13 +78,13 @@ describe('quote display', () => {
     render(<App />)
 
     await waitFor(() => {
-      expect(screen.getByText('I should have been more kind.')).toBeInTheDocument()
+      expect(screen.getByText('"I should have been more kind."')).toBeInTheDocument()
     })
 
     await userEvent.click(screen.getByRole('button', { name: 'next quote' }))
 
     await waitFor(() => {
-      expect(screen.getByText('The only way out is through.')).toBeInTheDocument()
+      expect(screen.getByText('"The only way out is through."')).toBeInTheDocument()
       expect(screen.getByText('— Robert Frost')).toBeInTheDocument()
     })
   })

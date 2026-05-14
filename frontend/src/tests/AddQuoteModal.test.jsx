@@ -30,6 +30,13 @@ describe('AddQuoteModal', () => {
     expect(screen.getByText('add-quote.sh')).toBeInTheDocument()
   })
 
+  it('calls onClose when the red close dot is clicked', async () => {
+    const onClose = vi.fn()
+    renderModal({ onClose })
+    await userEvent.click(screen.getByRole('button', { name: 'close' }))
+    expect(onClose).toHaveBeenCalled()
+  })
+
   it('calls onClose when cancel is clicked', async () => {
     const onClose = vi.fn()
     renderModal({ onClose })
@@ -56,6 +63,18 @@ describe('AddQuoteModal', () => {
     await userEvent.type(screen.getByRole('textbox', { name: /author/i }), 'Tester')
     await userEvent.click(screen.getByRole('button', { name: /submit/i }))
     expect(screen.getByRole('button', { name: /submit/i })).toBeDisabled()
+  })
+
+  it('strips outer quotes from the quote text before submitting', async () => {
+    fetch.mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+    renderModal()
+    await userEvent.type(screen.getAllByRole('textbox')[0], '"Already quoted"')
+    await userEvent.type(screen.getAllByRole('textbox')[1], 'Author')
+    await userEvent.click(screen.getByRole('button', { name: /submit/i }))
+    await waitFor(() => {
+      const body = JSON.parse(fetch.mock.calls[0][1].body)
+      expect(body.quote).toBe('Already quoted')
+    })
   })
 
   it('calls onSuccess with the returned data and closes on success', async () => {

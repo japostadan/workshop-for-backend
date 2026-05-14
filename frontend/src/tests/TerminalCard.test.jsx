@@ -3,14 +3,14 @@ import { describe, it, expect } from 'vitest'
 import TerminalCard from '../TerminalCard.jsx'
 
 describe('TerminalCard', () => {
-  it('renders the quote-of-the-day title bar', () => {
+  it('renders the title bar', () => {
     render(<TerminalCard quote={null} loading={false} error={null} />)
-    expect(screen.getByText('quote-of-the-day')).toBeInTheDocument()
+    expect(screen.getByText('$ quote-machine')).toBeInTheDocument()
   })
 
-  it('renders quote text and — Author when a quote is provided', () => {
+  it('renders quote text wrapped in quotes and — Author when a quote is provided', () => {
     render(<TerminalCard quote={{ quote: 'Test quote', author: 'Tester' }} loading={false} error={null} />)
-    expect(screen.getByText('Test quote')).toBeInTheDocument()
+    expect(screen.getByText('"Test quote"')).toBeInTheDocument()
     expect(screen.getByText('— Tester')).toBeInTheDocument()
   })
 
