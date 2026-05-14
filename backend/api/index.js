@@ -1,5 +1,5 @@
 import { createApp } from '../server.js'
-import { createStoreFromEnv } from '../quote-store-factory.js'
+import { createStoreFromEnv } from '../db/quote-store-factory.js'
 
 const store = createStoreFromEnv()
 await store.initialize()

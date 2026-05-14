@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import request from "supertest";
-import { createApp } from "../server.js";
-import { createQuoteStore } from "../quote-store.js";
+import { createApp } from "../../server.js";
+import { createQuoteStore } from "../../db/quote-store.js";
 
 const app = createApp(createQuoteStore([{ quote: "Test", author: "Tester" }]));
 const emptyApp = createApp(createQuoteStore([]));
@@ -112,7 +112,6 @@ describe("CORS", () => {
     const res = await request(restricted)
       .get("/quotes")
       .set("Origin", "http://attacker.com");
-    // cors sends the configured allowed origin; browsers block because it doesn't match request origin
     expect(res.headers["access-control-allow-origin"]).not.toBe("http://attacker.com");
   });
 });

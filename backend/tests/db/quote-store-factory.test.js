@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { createStoreFromEnv } from "../quote-store-factory.js";
+import { createStoreFromEnv } from "../../db/quote-store-factory.js";
 
 describe("createStoreFromEnv", () => {
   it("returns an in-memory store when DATABASE_URL is not set", async () => {

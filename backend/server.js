@@ -1,35 +1,14 @@
 import express from "express";
 import { fileURLToPath } from "url";
 import cors from "cors";
-import { validateQuote, QuoteNotFoundError } from "./quote.js";
+import { createQuotesRouter } from "./routes/quotes.js";
 
 export function createApp(store, corsOrigin) {
   const app = express();
 
   app.use(cors(corsOrigin ? { origin: corsOrigin } : undefined));
   app.use(express.json());
-
-  app.get("/quotes", async (req, res) => {
-    try {
-      res.json(await store.getRandomQuote());
-    } catch (err) {
-      if (err instanceof QuoteNotFoundError) {
-        res.status(404).json({ error: err.message });
-      } else {
-        throw err;
-      }
-    }
-  });
-
-  app.post("/quotes", async (req, res) => {
-    const error = validateQuote(req.body);
-    if (error) {
-      res.status(400).json({ error });
-      return;
-    }
-    await store.addQuote({ quote: req.body.quote, author: req.body.author });
-    res.status(201).json({ success: true });
-  });
+  app.use(createQuotesRouter(store));
 
   app.use((err, req, res, next) => {
     if (err.type === "entity.parse.failed") {
@@ -43,7 +22,7 @@ export function createApp(store, corsOrigin) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const { createStoreFromEnv } = await import("./quote-store-factory.js");
+  const { createStoreFromEnv } = await import("./db/quote-store-factory.js");
   const store = createStoreFromEnv([
     {
       quote: "Either write something worth reading or do something worth writing.",

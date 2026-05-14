@@ -1,4 +1,4 @@
-import { QuoteNotFoundError } from "./quote.js";
+import { QuoteNotFoundError } from "../quote.js";
 
 export function createQuoteStore(initialQuotes = []) {
   const quotes = [...initialQuotes];
