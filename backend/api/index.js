@@ -1,4 +1,7 @@
 import { createApp } from '../server.js'
 import { createStoreFromEnv } from '../quote-store-factory.js'
 
-export default createApp(createStoreFromEnv())
+const store = createStoreFromEnv()
+await store.initialize()
+
+export default createApp(store, process.env.CORS_ORIGIN)
