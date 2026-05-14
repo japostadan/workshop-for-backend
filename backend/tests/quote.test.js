@@ -25,6 +25,26 @@ describe("validateQuote", () => {
   it("returns 'quote is required' when body is null", () => {
     expect(validateQuote(null)).toBe("quote is required");
   });
+
+  it("returns error when quote exceeds 1000 characters", () => {
+    expect(validateQuote({ quote: "a".repeat(1001), author: "Tester" })).toBe(
+      "quote must be 1000 characters or fewer"
+    );
+  });
+
+  it("returns null when quote is exactly 1000 characters", () => {
+    expect(validateQuote({ quote: "a".repeat(1000), author: "Tester" })).toBeNull();
+  });
+
+  it("returns error when author exceeds 255 characters", () => {
+    expect(validateQuote({ quote: "Test", author: "a".repeat(256) })).toBe(
+      "author must be 255 characters or fewer"
+    );
+  });
+
+  it("returns null when author is exactly 255 characters", () => {
+    expect(validateQuote({ quote: "Test", author: "a".repeat(255) })).toBeNull();
+  });
 });
 
 describe("QuoteNotFoundError", () => {

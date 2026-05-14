@@ -3,10 +3,10 @@ import { fileURLToPath } from "url";
 import cors from "cors";
 import { validateQuote, QuoteNotFoundError } from "./quote.js";
 
-export function createApp(store) {
+export function createApp(store, corsOrigin) {
   const app = express();
 
-  app.use(cors());
+  app.use(cors(corsOrigin ? { origin: corsOrigin } : undefined));
   app.use(express.json());
 
   app.get("/quotes", async (req, res) => {
@@ -55,7 +55,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     },
   ]);
   await store.initialize();
-  const app = createApp(store);
+  const app = createApp(store, process.env.CORS_ORIGIN);
   app.listen(3001, () => {
     console.error("Quote server listening on port 3001");
   });

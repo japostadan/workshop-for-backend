@@ -87,10 +87,32 @@ describe("POST /quotes", () => {
 });
 
 describe("CORS", () => {
-  it("includes Access-Control-Allow-Origin on GET /quotes", async () => {
+  it("allows all origins when no corsOrigin is configured", async () => {
     const res = await request(app)
       .get("/quotes")
       .set("Origin", "http://localhost:5500");
-    expect(res.headers["access-control-allow-origin"]).toBeDefined();
+    expect(res.headers["access-control-allow-origin"]).toBe("*");
+  });
+
+  it("restricts to the configured origin when corsOrigin is set", async () => {
+    const allowed = "http://example.com";
+    const restricted = createApp(
+      createQuoteStore([{ quote: "Test", author: "Tester" }]),
+      allowed
+    );
+    const res = await request(restricted).get("/quotes").set("Origin", allowed);
+    expect(res.headers["access-control-allow-origin"]).toBe(allowed);
+  });
+
+  it("does not echo the attacker origin when corsOrigin is set", async () => {
+    const restricted = createApp(
+      createQuoteStore([{ quote: "Test", author: "Tester" }]),
+      "http://example.com"
+    );
+    const res = await request(restricted)
+      .get("/quotes")
+      .set("Origin", "http://attacker.com");
+    // cors sends the configured allowed origin; browsers block because it doesn't match request origin
+    expect(res.headers["access-control-allow-origin"]).not.toBe("http://attacker.com");
   });
 });
