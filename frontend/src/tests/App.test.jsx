@@ -57,7 +57,7 @@ describe('quote display', () => {
 
     await waitFor(() => {
       expect(screen.getByText('"Either write something worth reading or do something worth writing."')).toBeInTheDocument()
-      expect(screen.getByText('— Benjamin Franklin')).toBeInTheDocument()
+      expect(screen.getByText('ψ Benjamin Franklin')).toBeInTheDocument()
     })
   })
 
@@ -85,7 +85,7 @@ describe('quote display', () => {
 
     await waitFor(() => {
       expect(screen.getByText('"The only way out is through."')).toBeInTheDocument()
-      expect(screen.getByText('— Robert Frost')).toBeInTheDocument()
+      expect(screen.getByText('ψ Robert Frost')).toBeInTheDocument()
     })
   })
 

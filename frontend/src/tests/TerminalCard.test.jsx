@@ -8,10 +8,10 @@ describe('TerminalCard', () => {
     expect(screen.getByText('$ quote-machine')).toBeInTheDocument()
   })
 
-  it('renders quote text wrapped in quotes and — Author when a quote is provided', () => {
+  it('renders quote text wrapped in quotes and ψ Author when a quote is provided', () => {
     render(<TerminalCard quote={{ quote: 'Test quote', author: 'Tester' }} loading={false} error={null} />)
     expect(screen.getByText('"Test quote"')).toBeInTheDocument()
-    expect(screen.getByText('— Tester')).toBeInTheDocument()
+    expect(screen.getByText('ψ Tester')).toBeInTheDocument()
   })
 
   it('renders a red error line when an error is provided', () => {
