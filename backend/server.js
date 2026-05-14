@@ -56,7 +56,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   ]);
   await store.initialize();
   const app = createApp(store, process.env.CORS_ORIGIN);
-  app.listen(3001, () => {
-    console.error("Quote server listening on port 3001");
+  const port = process.env.PORT || 3001;
+  app.listen(port, () => {
+    console.error(`Quote server listening on port ${port}`);
   });
 }
